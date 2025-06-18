@@ -88,3 +88,55 @@ using ImageIO
 save("test.png", img_rgb)
 
 
+using ColorVectorSpace
+c1 = RGB(0.2, 0.3, 0.4)
+c2 = RGB(0.5, 0.3, 0.2)
+
+# \cdot<TAB> # or dot(c1, c2)
+c1⋅c2
+
+# This is equivelant to `mapc(*, c1, c2)`
+# \odot<TAB> # or hadamard(c1, c2)
+c1 ⊙ c2
+hadamard(c1, c2)
+
+# \otimes<TAB> # or tensor(c1, c2)
+c1 ⊗ c2
+tensor(c1, c2)
+
+c3 = c1 + 4 * c2
+clamp01nan(c3)
+clamp01(c3)
+
+# clamp image
+clamp!(channelview(img_rgb), 0, 1)
+
+
+display(MIME("text/plain"), img_rgb)
+
+dump(img_rgb[1,1])
+
+# size of image in bytes
+sizeof(img_rgb)
+
+
+
+
+
+using Random
+
+seed = 137
+rng = Xoshiro(seed)
+
+x1 = rand(rng, 2)
+
+rand(rng, 100)
+
+# Reset seed to same as initial
+Random.seed!(rng, seed)
+
+x2 = rand(rng, 2)
+
+x1 == x2
+
+
