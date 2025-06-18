@@ -6,7 +6,7 @@ traceray(::AbstractTracer, ray::Ray) = RGBColor(0.0, 0.0, 0.0)
 world(::AbstractTracer) = error("No world in tracer")
 
 
-
+#=
 struct SingleSphereTracer <: AbstractTracer
     world::World
 end
@@ -18,7 +18,23 @@ function traceray(tracer::SingleSphereTracer, ray::Ray)
     hitrec = hit(w.sphere, ray)
     return shading(hitrec, w.background)
 end
+=#
 
+struct MultipleObjectsTracer <: AbstractTracer
+    world::World
+end
+world(tracer::MultipleObjectsTracer) = tracer.world
+
+function traceray(tracer::MultipleObjectsTracer, ray::Ray)
+    w = world(tracer)
+    #hitrec = hit(w.sphere, ray)
+    sr = hitbarebonesobjects(w, ray)
+    if sr.did_hit
+        return sr.color
+    end
+    #return shading(hitrec, w.background)
+    return w.background
+end
 
 
 
@@ -27,8 +43,6 @@ function renderscene(tracer::AbstractTracer)
     w = world(tracer)
     vp = w.vp
     zw = 100.0
-
-    
 
     for r in Base.OneTo(vp.vres)
         for c in Base.OneTo(vp.hres)

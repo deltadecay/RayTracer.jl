@@ -33,9 +33,6 @@ struct RGBColor <: FieldVector{3, Float64}
     g::Float64
     b::Float64
 end
-red(c::RGBColor) = c.r
-green(c::RGBColor) = c.g
-blue(c::RGBColor) = c.b
 
 struct Ray
     o::Point3D
@@ -59,8 +56,15 @@ struct HitRec
     sr::ShadeRec
 end
 
+#=
 shading(::Nothing, defaultcolor::RGBColor) = defaultcolor
-shading(hitrec::HitRec, ::RGBColor) = hitrec.sr.color
+function shading(hitrec::HitRec, defaultcolor::RGBColor) 
+    if hitrec.sr.did_hit
+        return hitrec.sr.color
+    end
+    return defaultcolor
+end
+=#
 
 abstract type AbstractGeometry
 end

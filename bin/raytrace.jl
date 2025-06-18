@@ -4,12 +4,12 @@ using ColorTypes
 using Images
 using FileIO
 
-Base.convert(::Type{RGB{Float64}}, color::RGBColor) = RGB{Float64}(red(color), green(color.g), blue(color.b))
+Base.convert(::Type{RGB{Float64}}, color::RGBColor) = RGB{Float64}(color.r, color.g, color.b)
 
 function main(args)
 
     w = buildworld()
-    tracer = SingleSphereTracer(w)
+    tracer = MultipleObjectsTracer(w)
     renderscene(tracer)
 
   
