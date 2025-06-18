@@ -9,8 +9,8 @@
     s::Float64 = 1.0
     oogamma::Float64 = 1.0 # 1.0/gamma
     show_out_of_gamut::Bool = false
-
-    pixels::Matrix{RGBColor}
+    num_samples::Int64 = 1
+    pixels::Matrix{RGBColor} = Matrix{RGBColor}(undef, 200, 200)
 end
 
 
@@ -75,7 +75,7 @@ function buildworld()::World
     backroundcolor = RGBColor(0.0, 0.0, 0.0)
     gamma = 1.0 #1.8 #2.2
     pixels = fill(backroundcolor, (vres, hres))
-    vp = Viewport(hres, vres, 1.0, 1.0/gamma, false, pixels)
+    vp = Viewport(; hres, vres, s = 1.0, oogamma = 1.0/gamma, show_out_of_gamut = false, num_samples = 16, pixels)
     geoms = Vector{AbstractGeometry}();
     w = World(vp, backroundcolor, geoms)
 
