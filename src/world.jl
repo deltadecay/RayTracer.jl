@@ -6,11 +6,11 @@
 @kwdef struct Viewport
     hres::Int64 = 200
     vres::Int64 = 200
-    s::Float64 = 1.0
+    s::Float64 = 1.0 # pixel size
     oogamma::Float64 = 1.0 # 1.0/gamma
     show_out_of_gamut::Bool = false
     num_samples::Int64 = 1
-    pixels::Matrix{RGBColor} = Matrix{RGBColor}(undef, 200, 200)
+    pixels::Matrix{RGBColor} = Matrix{RGBColor}(undef, (vres, hres))
 end
 
 
@@ -70,12 +70,11 @@ end
 
 function buildworld()::World
 
-    hres = 300
-    vres = 300
     backroundcolor = RGBColor(0.0, 0.0, 0.0)
     gamma = 1.0 #1.8 #2.2
-    pixels = fill(backroundcolor, (vres, hres))
-    vp = Viewport(; hres, vres, s = 1.0, oogamma = 1.0/gamma, show_out_of_gamut = false, num_samples = 16, pixels)
+    #pixels = fill(backroundcolor, (vres, hres))
+    #vp = Viewport(; hres=300, vres=300, s = 1.0, oogamma = 1.0/gamma, show_out_of_gamut = false, num_samples = 16, pixels)
+    vp = Viewport(; hres=300, vres=300, oogamma = 1.0/gamma, num_samples = 16)
     geoms = Vector{AbstractGeometry}();
     w = World(vp, backroundcolor, geoms)
 
