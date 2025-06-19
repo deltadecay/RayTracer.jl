@@ -26,6 +26,9 @@ struct Ray
 end
 
 
+abstract type AbstractTracer end
+
+abstract type AbstractWorld end
 
 
 
@@ -42,22 +45,9 @@ struct HitRec
     sr::ShadeRec
 end
 
-#=
-shading(::Nothing, defaultcolor::RGBColor) = defaultcolor
-function shading(hitrec::HitRec, defaultcolor::RGBColor) 
-    if hitrec.sr.did_hit
-        return hitrec.sr.color
-    end
-    return defaultcolor
-end
-=#
 
 abstract type AbstractGeometry
 end
-
-
-
-
 
 struct Plane <: AbstractGeometry
     point::Point3D
@@ -82,3 +72,6 @@ end
 
 
 const Geometry = Union{Plane,Sphere,Sinusoid}
+
+
+

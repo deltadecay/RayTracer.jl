@@ -11,11 +11,10 @@ function main(args)
 
     Random.seed!(137)
     w = buildworld()
-    tracer = MultipleObjectsTracer(w)
-    renderscene(tracer)
+    renderscene(w)
 
-  
     imgrgb = convert.(RGB{Float64}, w.vp.pixels)
+
 
     save("test.png", imgrgb)
 end

@@ -1,5 +1,5 @@
 
-hit(geom::AbstractGeometry, ray::Ray)::Union{Nothing,HitRec} = error("Not implemented for " * typeof(geom))
+hit(geom::AbstractGeometry, ray::Ray)::Union{Nothing,HitRec} = error("hit() not implemented for " * typeof(geom))
 
 
 function hit(plane::Plane, ray::Ray)::Union{Nothing,HitRec}
