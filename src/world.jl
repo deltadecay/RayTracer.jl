@@ -78,7 +78,7 @@ function buildworld()::World
     gamma = 1.0 #1.8 #2.2
     #pixels = fill(backroundcolor, (vres, hres))
     #vp = Viewport(; hres=300, vres=300, s = 1.0, oogamma = 1.0/gamma, show_out_of_gamut = false, num_samples = 16, pixels)
-    vp = Viewport(; hres=300, vres=300, oogamma = 1.0/gamma, sampler = Sampler(1, Regular()))
+    vp = Viewport(; hres=300, vres=300, oogamma = 1.0/gamma, sampler = Sampler(16, Jittered()))
     geoms = Vector{Geometry}();
     tracer = MultipleObjectsTracer()
     w = World(vp, tracer, backroundcolor, geoms)

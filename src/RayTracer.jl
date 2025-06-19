@@ -12,7 +12,7 @@ export Point2D, Point3D, Vector3D, Normal, Point4D, Vector4D, Matrix4x4, RGBColo
 export Ray, ShadeRec, HitRec, AbstractGeometry, Plane, Sphere, hit
 
 export AbstractSamplingMethod, Regular, PureRandom, Jittered, NRooks, MultiJittered, Hammersley,
-    Sampler, num_samples, sample_unit_square!
+    Sampler, num_samples, sample_unit_square!, generatesamples
 
 export AbstractTracer, MultipleObjectsTracer, traceray
 
