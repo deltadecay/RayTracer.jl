@@ -20,7 +20,7 @@ function displaypixel(vp::Viewport, row::Int, col::Int, color::RGBColor)
     g = color.g
     b = color.b
     
-    #=
+    
     if vp.show_out_of_gamut
         if r > 1.0 || g > 1.0 || b > 1.0
             # Debug our of gamut colors as red
@@ -28,9 +28,11 @@ function displaypixel(vp::Viewport, row::Int, col::Int, color::RGBColor)
         end
     else
         maxval = max(r, g, b)
-        color = color / maxval
+        if maxval > 1.0
+            color = color / maxval
+        end
     end
-    =#
+    
 
     oog = vp.oogamma
     if oog != 1.0
@@ -49,7 +51,7 @@ end
 struct World
     vp::Viewport
     background::RGBColor
-    geometries::Vector{AbstractGeometry}
+    geometries::Vector{Geometry}
 end
 
 addgeometry(world::World, geom::AbstractGeometry) = push!(world.geometries, geom)
@@ -58,7 +60,8 @@ function hitbarebonesobjects(world::World, ray::Ray)
 
     sr = ShadeRec(false, Point3D(0,0,0), Normal(0,0,0), RGBColor(0,0,0))
     tmin = typemax(Float64)
-    for geom in world.geometries
+    @inbounds for i in eachindex(world.geometries)
+        geom = world.geometries[i]
         hitrec = hit(geom, ray)
         if !isnothing(hitrec) && hitrec.t < tmin
             tmin = hitrec.t
@@ -74,11 +77,11 @@ function buildworld()::World
     gamma = 1.0 #1.8 #2.2
     #pixels = fill(backroundcolor, (vres, hres))
     #vp = Viewport(; hres=300, vres=300, s = 1.0, oogamma = 1.0/gamma, show_out_of_gamut = false, num_samples = 16, pixels)
-    vp = Viewport(; hres=300, vres=300, oogamma = 1.0/gamma, num_samples = 16)
+    vp = Viewport(; hres=300, vres=300, oogamma = 1.0/gamma, num_samples = 1)
     geoms = Vector{AbstractGeometry}();
     w = World(vp, backroundcolor, geoms)
 
-
+#=
     sphere = Sphere(Point3D(0, -25, 0), 80.0, RGBColor(1, 0, 0))
     addgeometry(w, sphere)
 
@@ -87,7 +90,9 @@ function buildworld()::World
 
     plane = Plane(Point3D(0, 0, 0), Normal(0, 1, 1), RGBColor(0, 0.3, 0))
     addgeometry(w, plane)
-
+=#
+    #addgeometry(w, Sinusoid(Point2D(vp.hres * vp.s, vp.vres * vp.s), Point2D(0,0), Point2D(3.79, 3.79)))
+    addgeometry(w, Sinusoid(Point2D(vp.hres * vp.s, vp.vres * vp.s), Point2D(0,0), Point2D(10.83, 10.83)))
     return w
 end
 

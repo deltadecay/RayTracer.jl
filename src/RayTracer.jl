@@ -19,6 +19,7 @@ export AbstractTracer, MultipleObjectsTracer, traceray, renderscene
 const kEpsilon = 0.00001
 
 include("types.jl")
+include("hit.jl")
 include("world.jl")
 
 include("tracer.jl")

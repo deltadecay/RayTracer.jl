@@ -48,7 +48,7 @@ function renderscene(tracer::AbstractTracer)
         for c in Base.OneTo(vp.hres)
             color = RGBColor(0, 0, 0)
 
-            #=
+            # Regular sampling
             for p in Base.OneTo(n)
                 for q in Base.OneTo(n)
                     #x = vp.s * (c-1 - 0.5 * (vp.hres - 1.0))
@@ -59,7 +59,8 @@ function renderscene(tracer::AbstractTracer)
                     color = color + traceray(tracer, ray)
                 end
             end
-            =#
+            
+            #=
             # Random sampling
             for p in Base.OneTo(vp.num_samples)
                     x = vp.s * (c-1 - 0.5 * vp.hres + rand(Float64))
@@ -67,6 +68,7 @@ function renderscene(tracer::AbstractTracer)
                     ray = Ray(Point3D(x, y, zw), Vector3D(0, 0, -1))
                     color = color + traceray(tracer, ray)
             end
+            =#
             color = color / vp.num_samples
             displaypixel(vp, r, c, color)
         end
